@@ -20,12 +20,14 @@ import {
   ChevronRightIcon,
   GridIcon,
   ListIcon,
+  MessageCircleIcon,
   Settings,
 } from "lucide-react";
 import { useAppSelector } from "@/lib/hooks";
 import { useGetProfileQuery } from "@/lib/features/profile/profile.api";
 import LoadingSpinner from "@/components/ui/loading";
 import { useGetUserPostsQuery } from "@/lib/features/post/post.api";
+import { useRouter } from "next/navigation";
 
 type Post = {
   id: number;
@@ -36,6 +38,7 @@ type Post = {
 
 export default function Profile({ params }: { params: { id: string } }) {
   const myUser = useAppSelector((state) => state.auth.user);
+  const router = useRouter();
   const { data: user, isLoading } = useGetProfileQuery(params.id);
 
   const { data: posts, ...postFlags } = useGetUserPostsQuery(user?.id, {
@@ -140,10 +143,23 @@ export default function Profile({ params }: { params: { id: string } }) {
                     </form>
                   </DialogContent>
                 </Dialog>
-              ) : user.followStatus === "following" ? (
-                <Button variant={"secondary"}>UnFollow</Button>
               ) : (
-                <Button variant={"secondary"}>Follow</Button>
+                <div className="flex gap-2">
+                  {user.followStatus === "following" ? (
+                    <Button variant={"secondary"}>UnFollow</Button>
+                  ) : (
+                    <Button variant={"secondary"}>Follow</Button>
+                  )}
+
+                  <Button
+                    onClick={() =>
+                      router.push(`/messages/${user.id}?userId=true`)
+                    }
+                    variant={"secondary"}
+                  >
+                    <MessageCircleIcon />
+                  </Button>
+                </div>
               )}
             </div>
           </div>

@@ -3,6 +3,8 @@ import { authSlice } from "./features/auth/auth.slice";
 import { authApi } from "./features/auth/auth.api";
 import { profileApi } from "./features/profile/profile.api";
 import { postApi } from "./features/post/post.api";
+import { userApi } from "./features/user/user.api";
+import { chatApi } from "./features/chat/chat.api";
 
 export const makeStore = () => {
   let store = configureStore({
@@ -11,12 +13,16 @@ export const makeStore = () => {
       [authApi.reducerPath]: authApi.reducer,
       [profileApi.reducerPath]: profileApi.reducer,
       [postApi.reducerPath]: postApi.reducer,
+      [userApi.reducerPath]: userApi.reducer,
+      [chatApi.reducerPath]: chatApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(
         authApi.middleware,
         profileApi.middleware,
-        postApi.middleware
+        postApi.middleware,
+        userApi.middleware,
+        chatApi.middleware
       ),
   });
 

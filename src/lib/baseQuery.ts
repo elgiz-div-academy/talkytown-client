@@ -1,9 +1,8 @@
 import type { RootState } from "@/lib/store";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 
-console.log(" process.env.PUBLIC_API_URL", process.env.PUBLIC_API_URL);
 export const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3002",
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
 

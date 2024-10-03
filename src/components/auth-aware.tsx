@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/lib/store"; // Adjust this import path as needed
 import { AuthActions } from "@/lib/features/auth/auth.slice"; // Adjust this import path as needed
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { initializeSocket } from "@/lib/socket";
 
 interface AuthAwareProps {
   children: React.ReactNode;
@@ -23,6 +24,7 @@ const AuthAwareComponent: React.FC<AuthAwareProps> = ({ children }) => {
     const storedUser = localStorage.getItem("user");
     if (token && storedUser && !user) {
       dispatch(AuthActions.set({ token, user: JSON.parse(storedUser) }));
+      initializeSocket(token);
     }
   }, [dispatch, user]);
 
